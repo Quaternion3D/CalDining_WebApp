@@ -9,7 +9,7 @@ from django.utils import timezone
 class Food(models.Model):
 	name = models.CharField(max_length=200)
 	output = models.CharField(max_length=1000)
-	last_day_served = models.DateTimeField(null=True)
+	last_day_served = models.DateTimeField()
 
 	def days_since_served(self):
 		return (timezone.now() - self.last_day_served).days
