@@ -4,12 +4,35 @@ from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.core.context_processors import csrf
 
+from bs4 import BeautifulSoup
+from urllib2 import urlopen
+
+BASE_URL = "http://services.housing.berkeley.edu/FoodPro/dining/static/todaysentrees.asp"
+
 # Create your views here.
 
 #get todays food
 def scrape(request):
-	pass
+    html = urlopen(BASE_URL).read()
+    soup = BeautifulSoup(html, "lxml")
 
+    def is_meal(tag):
+        return tag.has_attr('width') and tag['width'] == '160' and tag.findAll("b")
+
+    menus = soup.find_all(is_meal)
+    for block in menus:
+        print block.find("b").get_text()
+        loc = block.find("a")
+        if loc:
+            info = loc["href"]
+            i = info.find("locationName") + 13
+            location = info[i:]
+            i = location.find("&")
+            location = location[:i]
+            print location
+        for item in block.findAll("font"):
+            print item.contents[0]
+        print '\n'
 
 #HOME
 #landing page, login, about
