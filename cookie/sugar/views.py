@@ -10,37 +10,40 @@ from django.utils import timezone
 from bs4 import BeautifulSoup
 from urllib2 import urlopen
 
+from sugar.models import Food
+
 BASE_URL = "http://services.housing.berkeley.edu/FoodPro/dining/static/todaysentrees.asp"
 
 # Create your views here.
 
 #get todays food
 def scrape(request):
-    html = urlopen(BASE_URL).read()
-    soup = BeautifulSoup(html, "lxml")
+	html = urlopen(BASE_URL).read()
+	soup = BeautifulSoup(html, "lxml")
 
-    def is_meal(tag):
-        return tag.has_attr('width') and tag['width'] == '160' and tag.findAll("b")
+	def is_meal(tag):
+		return tag.has_attr('width') and tag['width'] == '160' and tag.findAll("b")
 
-    menus = soup.find_all(is_meal)
-    for block in menus:
-        time = block.find("b").get_text()
-        loc = block.find("a")
-        if loc:
-            info = loc["href"]
-            i = info.find("locationName") + 13
-            location = info[i:]
-            i = location.find("&")
-            location = location[:i]
-        for item in block.findAll("font"):
-            food_name = item.contents[0]
-	    	fod = Food.objects.filter(name=food_name)	
-		    if not fod:
-		        fod = Food(name=food_name, last_day_served=timezone.now())
-				f.last_day_served = f.last_day_served.replace(day=f.last_day_served.day-1)
-		        fod.save()
-            else:
-                fod.add_location(location, time)
+	menus = soup.find_all(is_meal)
+	for block in menus:
+		time = block.find("b").get_text()
+		loc = block.find("a")
+		if loc:
+			info = loc["href"]
+			i = info.find("locationName") + 13
+			location = info[i:]
+			i = location.find("&")
+			location = location[:i]
+		for item in block.findAll("font"):
+			food_name = item.contents[0]
+			fod = Food.objects.filter(name=food_name)	
+			if not fod:
+				fod = Food(name=food_name, last_day_served=timezone.now())
+				fod.last_day_served = fod.last_day_served.replace(day=fod.last_day_served.day-1)
+				fod.save()
+			else:
+				fod[0].add_location(location, time)
+	return render_to_response('loggedin.html')
 
 #HOME
 #landing page, login, about

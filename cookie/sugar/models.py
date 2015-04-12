@@ -32,4 +32,3 @@ class Food(models.Model):
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
 	favs = models.CharField(max_length=1000)
-	

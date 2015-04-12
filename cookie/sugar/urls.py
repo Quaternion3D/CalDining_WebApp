@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^loggedin/$', views.loggedin, name='main'),
     url(r'^invalid/$', views.invalid_login, name='main'),
     url(r'^update_favs/$', views.invalid_login, name='main'),
+    url(r'^scrape/$', views.scrape, name='main'),
 
 ]
