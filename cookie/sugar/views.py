@@ -21,7 +21,6 @@ def scrape(request):
 
     menus = soup.find_all(is_meal)
     for block in menus:
-        print block.find("b").get_text()
         loc = block.find("a")
         if loc:
             info = loc["href"]
@@ -29,10 +28,7 @@ def scrape(request):
             location = info[i:]
             i = location.find("&")
             location = location[:i]
-            print location
         for item in block.findAll("font"):
-            print item.contents[0]
-        print '\n'
 
 #HOME
 #landing page, login, about

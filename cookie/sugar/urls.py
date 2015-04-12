@@ -10,5 +10,6 @@ urlpatterns = [
     url(r'^logout/$', views.logout, name='main'),
     url(r'^loggedin/$', views.loggedin, name='main'),
     url(r'^invalid/$', views.invalid_login, name='main'),
+    url(r'^update_favs/$', views.invalid_login, name='main'),
 
 ]

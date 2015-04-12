@@ -3,4 +3,13 @@
 	<h2>LOGGED IN!</h2>
 	<p>Click <a href="/sugar/logout/">here</a> to logout.</p>
 
+	<form action="/sugar/update_favs/" method="post">{% csrf_token %}
+		<label for="pref1">derp</label>
+		<input type="text" name="fav1" value="" id="fav1">
+
+		<input type="submit" value="update_favs"/>
+
+	</form>
+
+
 {% endblock %}
