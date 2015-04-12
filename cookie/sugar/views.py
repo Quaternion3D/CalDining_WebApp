@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import auth
@@ -8,7 +8,7 @@ from django.core.context_processors import csrf
 
 #get todays food
 def scrape(request):
-
+	pass
 
 
 #HOME
@@ -16,7 +16,7 @@ def scrape(request):
 def index(request):
 	#add link to main
 
-	return HttpResponse("THIS IS THE HOME PAGE")
+	return render_to_response('index.html')
 
 
 def main(request):
@@ -27,7 +27,6 @@ def main(request):
 	return HttpResponse("main page, select foods & stuff")
 
 
-'''
 def login(request):
 	c = {}
 	c.update(csrf(request))
@@ -40,9 +39,9 @@ def auth_view(request):
 
 	if user is not None:
 		auth.login(request, user)
-		return HttpResponseRedirect('/loggedin')
-	else
-		return HttpResponseRedirect('/invalid')	
+		return HttpResponseRedirect('/sugar/loggedin')
+	else:
+		return HttpResponseRedirect('/sugar/invalid')	
 
 def loggedin(request):
 	return render_to_response('loggedin.html',
@@ -53,6 +52,4 @@ def invalid_login(request):
 
 def logout(request):
 	auth.logout(request)
-	return render_to_response('logout.html')
-
-'''
+	return render_to_response('loggedout.html')
