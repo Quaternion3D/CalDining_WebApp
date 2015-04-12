@@ -31,4 +31,7 @@ class Food(models.Model):
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
-	favs = models.CharField(max_length=1000)
+	favs = models.CharField(max_length=1000, null=True)
+
+	def __str__(self):
+		return self.user

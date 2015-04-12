@@ -81,6 +81,8 @@ def loggedin(request):
 	return render_to_response('loggedin.html',
 								{'full_name': request.user.username})
 
+
+
 def invalid_login(request):
 	return render_to_response('invalid_login.html')
 
