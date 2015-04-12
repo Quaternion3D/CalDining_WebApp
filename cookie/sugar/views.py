@@ -1,8 +1,11 @@
+import datetime
+
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.core.context_processors import csrf
+from django.utils import timezone
 
 from bs4 import BeautifulSoup
 from urllib2 import urlopen
@@ -21,6 +24,7 @@ def scrape(request):
 
     menus = soup.find_all(is_meal)
     for block in menus:
+        time = block.find("b").get_text()
         loc = block.find("a")
         if loc:
             info = loc["href"]
@@ -29,6 +33,14 @@ def scrape(request):
             i = location.find("&")
             location = location[:i]
         for item in block.findAll("font"):
+            food_name = item.contents[0]
+	    	fod = Food.objects.filter(name=food_name)	
+		    if not fod:
+		        fod = Food(name=food_name, last_day_served=timezone.now())
+				f.last_day_served = f.last_day_served.replace(day=f.last_day_served.day-1)
+		        fod.save()
+            else:
+                fod.add_location(location, time)
 
 #HOME
 #landing page, login, about
